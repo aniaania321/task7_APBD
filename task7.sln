@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesLogic", "src\DevicesLogic\DevicesLogic.csproj", "{CAC2260D-17E6-4CBE-9304-AFF66807BD08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesAPI", "DevicesAPI\DevicesAPI.csproj", "{B956EEA5-EDDF-4DFB-8F55-82931BFDEE18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceAPI", "src\DeviceAPI\DeviceAPI.csproj", "{8DF52834-7E32-4648-A995-D3DD7281C2AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +14,9 @@ Global
 		{CAC2260D-17E6-4CBE-9304-AFF66807BD08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAC2260D-17E6-4CBE-9304-AFF66807BD08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAC2260D-17E6-4CBE-9304-AFF66807BD08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B956EEA5-EDDF-4DFB-8F55-82931BFDEE18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B956EEA5-EDDF-4DFB-8F55-82931BFDEE18}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B956EEA5-EDDF-4DFB-8F55-82931BFDEE18}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B956EEA5-EDDF-4DFB-8F55-82931BFDEE18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DF52834-7E32-4648-A995-D3DD7281C2AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DF52834-7E32-4648-A995-D3DD7281C2AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DF52834-7E32-4648-A995-D3DD7281C2AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF52834-7E32-4648-A995-D3DD7281C2AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
