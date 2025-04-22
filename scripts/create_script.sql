@@ -1,0 +1,27 @@
+CREATE TABLE Device (
+    Id VARCHAR(50) PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    IsEnabled BIT NOT NULL
+);
+
+CREATE TABLE Embedded (
+    Id INT PRIMARY KEY,
+    IpAddress VARCHAR(50) NOT NULL,
+    NetworkName VARCHAR(100),
+    DeviceId VARCHAR(50) NOT NULL UNIQUE,
+    FOREIGN KEY (DeviceId) REFERENCES Device(Id) ON DELETE CASCADE
+);
+
+CREATE TABLE PersonalComputer (
+    Id INT PRIMARY KEY,
+    OperationSystem VARCHAR(100),
+    DeviceId VARCHAR(50) NOT NULL UNIQUE,
+    FOREIGN KEY (DeviceId) REFERENCES Device(Id) ON DELETE CASCADE
+);
+
+CREATE TABLE Smartwatch (
+    Id INT PRIMARY KEY,
+    BatteryPercentage INT NOT NULL,
+    DeviceId VARCHAR(50) NOT NULL UNIQUE,
+    FOREIGN KEY (DeviceId) REFERENCES Device(Id) ON DELETE CASCADE
+);

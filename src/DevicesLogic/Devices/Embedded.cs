@@ -24,9 +24,8 @@ public class Embedded : Device
             if (ipRegex.IsMatch(value))
             {
                 _ipAddress = value;
-            }
-
-            throw new ArgumentException("Wrong IP address format.");
+            }else{ throw new ArgumentException("Wrong IP address format.");}
+           
         }
     }
     
