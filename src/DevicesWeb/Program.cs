@@ -9,7 +9,6 @@ builder.Services.AddTransient<IDeviceService, DeviceService>(_ => new DeviceServ
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -49,70 +48,47 @@ app.MapGet("/api/devices/{id}/{deviceType}", (IDeviceService deviceService, stri
         return Results.Problem(ex.Message);
     }
 });
-app.MapPost("/api/devices/{deviceType}/{deviceName}/{isEnabled}", async (HttpRequest request, IDeviceService deviceService, string deviceType, string deviceName, bool isEnabled) =>
+app.MapPost("/api/devices", async (HttpRequest request, IDeviceService deviceService) =>
 {
-    using var reader = new StreamReader(request.Body);
-    var content = await reader.ReadToEndAsync();
-
-    object deviceDto;
-
     try
     {
-        switch (deviceType)
+        using var reader = new StreamReader(request.Body);
+        var content = await reader.ReadToEndAsync();
+
+        var temp = JsonSerializer.Deserialize<JsonElement>(content);
+        var deviceType = temp.GetProperty("deviceType").GetString();
+        var deviceName = temp.GetProperty("deviceName").GetString();
+        var isEnabled = temp.GetProperty("isEnabled").GetBoolean();
+
+        object deviceDto = deviceType switch
         {
-            case "Embedded":
-                deviceDto = JsonSerializer.Deserialize<EmbeddedDTO>(content);
-                break;
-
-            case "PersonalComputer":
-                deviceDto = JsonSerializer.Deserialize<PersonalComputerDTO>(content);
-                break;
-
-            case "Smartwatch":
-                deviceDto = JsonSerializer.Deserialize<SmartwatchDTO>(content);
-                break;
-
-            default:
-                return Results.BadRequest("invalid device Type.");
-        }
-
-        var device = new DeviceDTO
-        {
-            Name = deviceName,
-            IsEnabled = isEnabled
+            "Embedded" => JsonSerializer.Deserialize<EmbeddedDTO>(content),
+            "PersonalComputer" => JsonSerializer.Deserialize<PersonalComputerDTO>(content),
+            "Smartwatch" => JsonSerializer.Deserialize<SmartwatchDTO>(content),
+            _ => null
         };
 
-        if (deviceDto is EmbeddedDTO embeddedDto)
-        {
-            embeddedDto.Device = device;
-        }
-        else if (deviceDto is PersonalComputerDTO pcDto)
-        {
-            pcDto.Device = device;
-        }
-        else if (deviceDto is SmartwatchDTO smartwatchDto)
-        {
-            smartwatchDto.Device = device;
-        }
-        else
-        {
-            return Results.BadRequest(":(");
-        }
+        if (deviceDto == null)
+            return Results.BadRequest("Invalid or unsupported device type.");
+
+        deviceService.CreateDevice(deviceDto, deviceType, deviceName, isEnabled);
+        return Results.Ok("Device created successfully!");
     }
     catch (JsonException ex)
     {
-        return Results.BadRequest(ex.Message);
+        return Results.BadRequest($"Invalid format: {ex.Message}");
     }
     catch (Exception ex)
     {
-        return Results.BadRequest(ex.Message);
+        return Results.Problem($"Unexpected error: {ex.Message}");
     }
-    deviceService.CreateDevice(deviceDto, deviceType, deviceName, isEnabled);
-
-    return Results.Ok("Device created successfully :D");
 });
 
-app.MapPut("/api/devices/{deviceType}", async (HttpRequest request, IDeviceService deviceService, string deviceType) =>
+
+app.MapPut("/api/devices/{deviceType}/{deviceId}", async (
+    HttpRequest request,
+    IDeviceService deviceService,
+    string deviceType, string deviceId) =>
 {
     using var reader = new StreamReader(request.Body);
     var content = await reader.ReadToEndAsync();
@@ -121,39 +97,40 @@ app.MapPut("/api/devices/{deviceType}", async (HttpRequest request, IDeviceServi
 
     try
     {
-        switch (deviceType)
+        var options = new JsonSerializerOptions
         {
-            case "Embedded":
-                deviceDto = JsonSerializer.Deserialize<EmbeddedDTO>(content);
-                break;
+            PropertyNameCaseInsensitive = true
+        };
+        deviceDto = deviceType switch
+        {
+            "Embedded"        => JsonSerializer.Deserialize<EmbeddedDTO>(content, options),
+            "PersonalComputer"=> JsonSerializer.Deserialize<PersonalComputerDTO>(content, options),
+            "Smartwatch"      => JsonSerializer.Deserialize<SmartwatchDTO>(content, options),
+            _                 => throw new ArgumentException("Incorrect device type.")
+        };
 
-            case "PersonalComputer":
-                deviceDto = JsonSerializer.Deserialize<PersonalComputerDTO>(content);
-                break;
 
-            case "Smartwatch":
-                deviceDto = JsonSerializer.Deserialize<SmartwatchDTO>(content);
-                break;
-
-            default:
-                return Results.BadRequest("Incorrect device type.");
+        if (deviceDto == null)
+        {
+            return Results.BadRequest("DTO is null");
         }
 
-        deviceService.UpdateDevice(deviceDto, deviceType);
-
+        deviceService.UpdateDevice(deviceId,deviceDto, deviceType);
         return Results.Ok("Device updated successfully :D");
+    }
+    catch (JsonException ex)
+    {
+        return Results.BadRequest($"JSON error: {ex.Message}");
     }
     catch (ArgumentException ex)
     {
-        return Results.BadRequest(ex.Message);
+        return Results.BadRequest($"Argument error: {ex.Message}");
     }
     catch (Exception ex)
     {
-        return Results.Problem(ex.Message);
+        return Results.Problem($"Internal error: {ex.Message}");
     }
 });
-
-
 
 app.MapDelete("/api/devices/{deviceId}/{deviceType}", (string deviceId, string deviceType, IDeviceService deviceService) =>
 {

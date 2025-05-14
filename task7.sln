@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesWeb", "src\DevicesWe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devices_DTOs", "src\Devices_DTOs\Devices_DTOs.csproj", "{D2CE68D3-E68B-446C-911F-E5053EBAD31A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesRepository", "src\DevicesRepository\DevicesRepository.csproj", "{BA9E93AA-5AD3-4314-99F0-CA91C984D2C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{D2CE68D3-E68B-446C-911F-E5053EBAD31A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2CE68D3-E68B-446C-911F-E5053EBAD31A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2CE68D3-E68B-446C-911F-E5053EBAD31A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA9E93AA-5AD3-4314-99F0-CA91C984D2C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA9E93AA-5AD3-4314-99F0-CA91C984D2C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA9E93AA-5AD3-4314-99F0-CA91C984D2C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA9E93AA-5AD3-4314-99F0-CA91C984D2C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

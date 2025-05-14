@@ -10,5 +10,5 @@ public interface IDeviceService
     void CreateDevice(object deviceDto, string deviceType, string deviceName,bool isEnabled);
 
     bool DeleteDeviceById(string deviceId, string deviceType);
-    void UpdateDevice(object deviceDto, string deviceType);
+    void UpdateDevice(string id,object deviceDto, string deviceType);
 }
